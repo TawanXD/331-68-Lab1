@@ -1,4 +1,4 @@
-const { reactive } = Vue
+const { reactive, toRefs } = Vue
 const reviewForm = {
   template: 
   /*html*/`
@@ -6,13 +6,13 @@ const reviewForm = {
       <h3>Leave a review</h3>
 
       <label for="name">Name:</label>
-      <input id="name" v-model="form.name">
+      <input id="name" v-model="name">
 
       <label for="review">Review:</label>
-      <textarea id="review" v-model="form.review"></textarea>
+      <textarea id="review" v-model="review"></textarea>
 
       <label for="rating">Rating:</label>
-      <select id="rating" v-model.number="form.rating">
+      <select id="rating" v-model.number="rating">
         <option disabled value="">Please select a rating</option>
         <option>5</option>
         <option>4</option>
@@ -21,7 +21,7 @@ const reviewForm = {
         <option>1</option>
       </select>
       <label for="recommendation">Would you recommend this product?</label>
-      <select id="recommendation" v-model="form.recommend">
+      <select id="recommendation" v-model="recommend">
         <option disabled value="">Please select</option>
         <option>Yes</option>
         <option>No</option>
@@ -35,7 +35,7 @@ const reviewForm = {
       name: '',
       review: '',
       rating: null,
-      recommendation: ''
+      recommend: ''
     })
 
     function onSubmit() {
@@ -61,10 +61,11 @@ const reviewForm = {
       form.name = ''
       form.review = ''
       form.rating = null
+      form.recommendation = ''
     }
 
     return {
-      form,
+      ...toRefs(form),
       onSubmit
     }
   }
