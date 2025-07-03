@@ -1,5 +1,6 @@
 
 const productDisplay = {
+  props: ['premium'],
   template: 
     /*html*/ 
     `
@@ -7,19 +8,18 @@ const productDisplay = {
     <div class="product-row">
       <div class="product-box"> 
         <h1>{{title}}</h1>
-        <ul class="product-details">
-          <li v-for="detail in details" :key="detail">
-          {{ detail }}
-          </li>
-        </ul>
+        <product-details :details="details" />
         <p class="product-desc">{{ description }}</p>
         <div class="stock-status">
           <p v-if="onSale" class="sale-label">{{ saleMessage }}</p> 
           <p v-if="onSale" class="sale-label">On Sale!</p>
           <p v-else class="sale-label not">Not on Sale</p>
+          <p v-if="premium" class="sale-label">Free shipping for premium staff</p>
+          <p v-else>Shipping cost: 10 THB</p>
           <p v-if="inStock">In Stock</p>
           <p v-else-if="inventory <= 10 && inventory > 0">Almost out of Stock</p>
           <p v-else>Out of Stock</p>
+          <p v-if='!premium'>Shipping:{{shipping}}</p>
         </div>
         <p class="size-info">Sock sizes: {{ sizes.join(', ') }}</p>
       </div> 
@@ -44,21 +44,27 @@ const productDisplay = {
     </div>    
   </div>        
     `,
-    setup() {
+    props: {
+      premium: Boolean
+    },
+    setup(props) {
+      console.log("Premium is", props.premium)
+      const shipping = computed(() => {
+        if (props.premiun){
+          return 'Free'
+        } else {
+          return 30
+        }
+      })
       const product = ref('Boots') 
       const brand = ref('SE 331')
       const title = computed(() => {
         return brand.value + ' ' + product.value
       })
       const description = ref('A pair of boots.') 
-      //const image = ref('./assets/images/socks_green.jpg') 
-      //const inStock = ref(true) 
       const inventory = ref(11) 
-      const details = ref([ '50% cotton', '30% wool', '20% polyester' ]) 
       const onSale = ref(true) 
       const variants = ref([ 
-        //{ id: 2234, color: 'green',image: './assets/images/socks_green.jpg' }, 
-        //{ id: 2235, color: 'blue' ,image: './assets/images/socks_blue.jpg'} 
         { id: 2234, color: 'green',image: './assets/images/socks_green.jpg', quantity: 50 }, 
         { id: 2235, color: 'blue' ,image: './assets/images/socks_blue.jpg', quantity: 0} 
       ])
@@ -87,16 +93,19 @@ const productDisplay = {
       const saleMessage = computed(() => {
         return onSale.value ? `${brand.value} ${product.value} is on sale!` : ''
       })
+      const details = ref([ '50% cotton', '30% wool', '20% polyester' ])
+
+      
 
   return {
-    //product,
-    //brand,
+    premium: props.premium,
     title,
     description,
     image,
     inStock,
     saleMessage,
       updateVariant,
+    shipping,  
     inventory,
     details,
     onSale,

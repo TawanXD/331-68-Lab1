@@ -3,17 +3,20 @@ const { createApp, ref, computed } = Vue
 const app = createApp({
   setup() {    
     const cart = ref(0) 
-
-return {
-  cart
-}
-} 
+    const details = ref(true)
+    const premium = ref(true)
+    return {
+      cart,
+      premium,
+      details
+    }
+  } 
 })
+app.component('product-details', productDetails)
 
 app.component("product-display", productDisplay)
 
 app.mount('#app')
-
 
 // const { createApp, ref, computed } = Vue
 
