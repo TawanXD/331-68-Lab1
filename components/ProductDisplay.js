@@ -1,6 +1,7 @@
 
 const productDisplay = {
   props: ['premium'],
+  props: ['cartCounts'],
   template: 
     /*html*/ 
     `
@@ -38,6 +39,12 @@ const productDisplay = {
         </div>
         <div class="button-row">
           <button class="button" :disabled ='!inStock' @click ="addToCart" :class="{disabledButton: !inStock}">Add to Cart</button>
+          <button
+          class="button"
+          @click="removeFromCart"
+          >
+          Remove</button>
+
           <button class="button" @click ="toggleStock">Toggle Stock Status</button>
         </div>
       </div> 
@@ -47,7 +54,7 @@ const productDisplay = {
     props: {
       premium: Boolean
     },
-    setup(props) {
+    setup(props, {emit}) {
       console.log("Premium is", props.premium)
       const shipping = computed(() => {
         if (props.premiun){
@@ -56,36 +63,62 @@ const productDisplay = {
           return 30
         }
       })
+
       const product = ref('Boots') 
+
       const brand = ref('SE 331')
+
       const title = computed(() => {
         return brand.value + ' ' + product.value
       })
+
       const description = ref('A pair of boots.') 
+
       const inventory = ref(11) 
+
       const onSale = ref(true) 
+
       const variants = ref([ 
         { id: 2234, color: 'green',image: './assets/images/socks_green.jpg', quantity: 50 }, 
-        { id: 2235, color: 'blue' ,image: './assets/images/socks_blue.jpg', quantity: 0} 
+        { id: 2235, color: 'blue' ,image: './assets/images/socks_blue.jpg', quantity: 60} 
       ])
+
+      function getColorById(id) {
+        const variant = variants.find(v => v.id === Number(id))
+        return variant ? variant.color : 'Unknown'
+      }
+
+
       const selectedVariant = ref(0)
+
       function updateVariant(index) {  
         selectedVariant.value = index;
       }
+
       const image = computed(() => {
         return variants.value[selectedVariant.value].image
       })
       const inStock = computed(() => {
         return variants.value[selectedVariant.value].quantity > 0
-      })   
-      const cart = ref(0) 
-      function addToCart() { cart.value += 1 } 
+      })  
+
+      const cart = ref([]) 
+
+      //add to cart function
+      function addToCart() { emit('add-to-cart', variants.value[selectedVariant.value].id) } 
+      function removeFromCart() {
+        const id = variants.value[selectedVariant.value].id
+        emit('remove-from-cart', id)
+      }
+
       function updateImage(variantImage) {
          image.value = variantImage 
         } 
-      function toggleStock() {
+      
+        function toggleStock() {
           inStock.value = !inStock.value
       }
+
       const sizes = ref(['S', 'M', 'L'])
       const produce2 = ref('CAMT')
       const description2 = ref('A Link to camt.')
@@ -112,12 +145,14 @@ const productDisplay = {
     variants,
     cart,
       addToCart,
+      removeFromCart,
       updateImage,
       toggleStock,
     sizes,
     produce2,
     description2,
-    url
+    url,
+    getColorById
   }
 }
 } 
