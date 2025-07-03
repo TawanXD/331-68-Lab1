@@ -1,10 +1,11 @@
-const { createApp, ref } = Vue
+const { createApp, ref, computed } = Vue
 
 createApp({ setup() { 
     const product = ref('Boots') 
+    const brand = ref('SE 331')
     const description = ref('A pair of boots.') 
     const image = ref('./assets/images/socks_green.jpg') 
-    const inStock = ref(false) 
+    const inStock = ref(true) 
     const inventory = ref(11) 
     const details = ref([ '50% cotton', '30% wool', '20% polyester' ]) 
     const onSale = ref(true) 
@@ -14,7 +15,12 @@ createApp({ setup() {
     ])     
     const cart = ref(0) 
     function addToCart() { cart.value += 1 } 
-    function updateImage(variantImage) { image.value = variantImage } 
+    const title = computed(() => {
+      return brand.value + ' ' + product.value
+    })
+    function updateImage(variantImage) {
+       image.value = variantImage 
+      } 
     function toggleStock() {
         inStock.value = !inStock.value
     }
@@ -24,7 +30,9 @@ createApp({ setup() {
     const url = ref('https://www.camt.cmu.ac.th')
 
 return {
-  product,
+  //product,
+  //brand,
+  title,
   description,
   image,
   inStock,
