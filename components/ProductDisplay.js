@@ -39,12 +39,8 @@ const productDisplay = {
         </div>
         <div class="button-row">
           <button class="button" :disabled ='!inStock' @click ="addToCart" :class="{disabledButton: !inStock}">Add to Cart</button>
-          <button
-          class="button"
-          @click="removeFromCart"
-          >
-          Remove</button>
-
+          <button class="button" @click="removeFromCart" >Remove</button>
+          <review-form @review-submitted="addReview"></review-form>
           <button class="button" @click ="toggleStock">Toggle Stock Status</button>
         </div>
       </div> 
@@ -64,6 +60,7 @@ const productDisplay = {
         }
       })
 
+      const reviews = ref([])
       const product = ref('Boots') 
 
       const brand = ref('SE 331')
@@ -127,7 +124,11 @@ const productDisplay = {
         return onSale.value ? `${brand.value} ${product.value} is on sale!` : ''
       })
       const details = ref([ '50% cotton', '30% wool', '20% polyester' ])
-
+      function addReview(review) {
+        reviews.value.push(review)
+        console.log("New review added:", review)
+        console.log("All reviews:", reviews.value)
+      }
       
 
   return {
@@ -136,6 +137,8 @@ const productDisplay = {
     description,
     image,
     inStock,
+    reviews,
+    addReview,
     saleMessage,
       updateVariant,
     shipping,  

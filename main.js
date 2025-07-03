@@ -50,5 +50,8 @@ app.component('product-details', productDetails)
 
 app.component("product-display", productDisplay)
 
+app.component('review-form', reviewForm)
+
+
 app.mount('#app')
 
