@@ -20,6 +20,12 @@ const reviewForm = {
         <option>2</option>
         <option>1</option>
       </select>
+      <label for="recommendation">Would you recommend this product?</label>
+      <select id="recommendation" v-model="form.recommend">
+        <option disabled value="">Please select</option>
+        <option>Yes</option>
+        <option>No</option>
+      </select>
 
       <input class="button" type="submit" value="Submit">
     </form>
@@ -28,18 +34,20 @@ const reviewForm = {
     const form = reactive({
       name: '',
       review: '',
-      rating: null
+      rating: null,
+      recommendation: ''
     })
 
     function onSubmit() {
         if (!form.name || !form.review || !form.rating) {
-            alert("Please fill out every field.")
+            alert("Review is in complete.Please fill out every field.Please fill out every field.")
             return
         }
         const productReview = {
             name: form.name,
             review: form.review,
-            rating: form.rating
+            rating: form.rating,
+            recommend: form.recommend
         }
         emit('review-submitted', productReview)
         form.name = ''

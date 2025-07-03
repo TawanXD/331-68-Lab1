@@ -40,6 +40,7 @@ const productDisplay = {
         <div class="button-row">
           <button class="button" :disabled ='!inStock' @click ="addToCart" :class="{disabledButton: !inStock}">Add to Cart</button>
           <button class="button" @click="removeFromCart" >Remove</button>
+          <review-list v-if="reviews.length" :reviews="reviews"></review-list>
           <review-form @review-submitted="addReview"></review-form>
           <button class="button" @click ="toggleStock">Toggle Stock Status</button>
         </div>
