@@ -24,7 +24,7 @@ const productDisplay = {
         </div>
         <p class="size-info">Sock sizes: {{ sizes.join(', ') }}</p>
       </div> 
-      <div class="product-box img">
+      <div class="product-image">
         <img :src="image" :class="{ 'out-of-stock-image': !inStock }" />                           
         <div class="color-options"> 
           <div 

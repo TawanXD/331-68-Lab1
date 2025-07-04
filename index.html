@@ -15,10 +15,6 @@
             <div v-for="(qty, id) in cartCounts" :key="id">
                 Color: {{ getColorById(id) }} → Amount in cart: {{ qty }}
             </div>
-
-
-
-
             <product-display @add-to-cart="addToCart" @remove-from-cart="removeFromCart"
 ></product-display>
             <product-display @add-to-cart="addToCart" @remove-from-cart="removeFromCart"
